@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simple Web App</h1>
+            <div id="clock"></div>
+        </header>
+        
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <button type="submit">Login</button>
+            </form>
+            <div id="welcome-message"></div>
+        </section>
+        
+        <section id="todo-section">
+            <h2>Todo List</h2>
+            <form id="todo-form">
+                <input type="text" id="todo-input" placeholder="Enter todo" required>
+                <button type="submit">Add</button>
+            </form>
+            <ul id="todo-list"></ul>
+        </section>
+        
+        <section id="weather-section">
+            <h2>Weather</h2>
+            <div id="weather"></div>
+        </section>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
