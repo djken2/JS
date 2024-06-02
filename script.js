@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Clock
     function updateClock() {
         const clock = document.getElementById("clock");
         const now = new Date();
@@ -7,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateClock, 1000);
     updateClock();
 
+    // Login
     const loginForm = document.getElementById("login-form");
     const welcomeMessage = document.getElementById("welcome-message");
 
@@ -23,23 +25,16 @@ document.addEventListener("DOMContentLoaded", () => {
         loginForm.style.display = "none";
     });
 
+    // Todo List
     const todoForm = document.getElementById("todo-form");
     const todoList = document.getElementById("todo-list");
 
     function renderTodoList() {
         todoList.innerHTML = "";
         const todos = JSON.parse(localStorage.getItem("todos")) || [];
-        todos.forEach((todo, index) => {
+        todos.forEach(todo => {
             const li = document.createElement("li");
             li.textContent = todo;
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Delete";
-            deleteButton.addEventListener("click", () => {
-                todos.splice(index, 1);
-                localStorage.setItem("todos", JSON.stringify(todos));
-                renderTodoList();
-            });
-            li.appendChild(deleteButton);
             todoList.appendChild(li);
         });
     }
@@ -56,29 +51,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderTodoList();
 
-    const images = [
-        "url(image1.jpg)",
-        "url(image2.jpg)",
-        "url(image3.jpg)",
-    ];
-    document.body.style.backgroundImage = images[Math.floor(Math.random() * images.length)];
-
+    // Weather and Location
     function getWeather(lat, lon) {
-        const apiKey = "your_openweathermap_api_key";
+        const apiKey = "YOUR_API_KEY";
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
         fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
+            .then(response => response.json())
+            .then(data => {
                 const weather = document.getElementById("weather");
                 weather.textContent = `Temperature: ${data.main.temp}°C, Weather: ${data.weather[0].description}`;
+            })
+            .catch(error => {
+                console.error('Error fetching weather:', error);
+                const weather = document.getElementById("weather");
+                weather.textContent = "Weather information is currently unavailable.";
             });
     }
 
     function getLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
+            navigator.geolocation.getCurrentPosition(position => {
                 const { latitude, longitude } = position.coords;
                 getWeather(latitude, longitude);
+            }, error => {
+                console.error('Error getting location:', error);
+                const weather = document.getElementById("weather");
+                weather.textContent = "Geolocation information is currently unavailable.";
             });
         } else {
             const weather = document.getElementById("weather");
