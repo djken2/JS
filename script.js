@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Clock
     function updateClock() {
         const clock = document.getElementById("clock");
         const now = new Date();
@@ -8,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Login
     const loginForm = document.getElementById("login-form");
     const welcomeMessage = document.getElementById("welcome-message");
 
@@ -25,16 +23,25 @@ document.addEventListener("DOMContentLoaded", () => {
         loginForm.style.display = "none";
     });
 
-    // Todo List
     const todoForm = document.getElementById("todo-form");
     const todoList = document.getElementById("todo-list");
 
     function renderTodoList() {
         todoList.innerHTML = "";
         const todos = JSON.parse(localStorage.getItem("todos")) || [];
-        todos.forEach(todo => {
+        todos.forEach((todo, index) => {
             const li = document.createElement("li");
             li.textContent = todo;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.addEventListener("click", () => {
+                todos.splice(index, 1);
+                localStorage.setItem("todos", JSON.stringify(todos));
+                renderTodoList();
+            });
+
+            li.appendChild(deleteButton);
             todoList.appendChild(li);
         });
     }
@@ -51,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderTodoList();
 
-    // Weather and Location
     function getWeather(lat, lon) {
         const apiKey = "YOUR_API_KEY";
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
